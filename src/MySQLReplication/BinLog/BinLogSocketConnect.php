@@ -13,6 +13,7 @@ use MySQLReplication\Socket\SocketInterface;
 
 class BinLogSocketConnect
 {
+    private const BINLOG_SEND_ANNOTATE_ROWS_EVENT = 0x02;
     private const COM_BINLOG_DUMP = 0x12;
     private const COM_REGISTER_SLAVE = 0x15;
     private const COM_BINLOG_DUMP_GTID = 0x1e;
@@ -266,7 +267,7 @@ class BinLogSocketConnect
 
         $data = pack('i', strlen($binFileName) + 11) . chr(self::COM_BINLOG_DUMP);
         $data .= pack('I', $binFilePos);
-        $data .= pack('v', 2);
+        $data .= pack('v', chr(self::BINLOG_SEND_ANNOTATE_ROWS_EVENT));
         $data .= pack('I', Config::getSlaveId());
         $data .= $binFileName;
 
