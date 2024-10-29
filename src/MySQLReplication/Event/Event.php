@@ -25,6 +25,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Event
 {
+    public const REPLICATION_QUERY = '/* isReplicating */';
+
     private const MARIADB_DUMMY_QUERY = '# Dum';
     private const EOF_HEADER_VALUE = 254;
 
@@ -32,6 +34,7 @@ class Event
     private $rowEventFactory;
     private $eventDispatcher;
     private $cache;
+    private bool $isReplicated = false;
 
     public function __construct(
         BinLogSocketConnect $binLogSocketConnect,
@@ -80,8 +83,13 @@ class Event
             $eventDTO = new HeartbeatDTO($eventInfo);
         } else if (ConstEventType::MARIA_GTID_EVENT === $eventInfo->getType()) {
             $eventDTO = (new MariaDbGtidEvent($eventInfo, $binaryDataReader))->makeMariaDbGTIDLogDTO();
-        } else if ($eventInfo->getType() === 160) {
-            ArrayCache::setRawQuery($binaryDataReader->getData());
+        } elseif ($eventInfo->getType() === ConstEventType::MARIA_ANOTATE_ROWS_EVENT) {
+            if ($binaryDataReader->getData() && strpos($binaryDataReader->getData(), self::REPLICATION_QUERY) !== false) {
+                $this->isReplicated = true;
+                return;
+            } else {
+                $this->isReplicated = false;
+            }
         }
 
         // check for ignore and permitted events

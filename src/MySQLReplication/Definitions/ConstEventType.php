@@ -61,6 +61,7 @@ class ConstEventType
 
     // mariadb
     // https://github.com/MariaDB/server/blob/10.4/sql/log_event.h
+    public const MARIA_ANOTATE_ROWS_EVENT = 160;
     public const MARIA_BINLOG_CHECKPOINT_EVENT = 161;
     public const MARIA_GTID_EVENT = 162;
     public const MARIA_GTID_LIST_EVENT = 163;
