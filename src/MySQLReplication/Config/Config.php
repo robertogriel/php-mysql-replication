@@ -114,7 +114,7 @@ readonly class Config implements JsonSerializable
 
     public function checkEvent(int $type): bool
     {
-        if ($this->eventsOnly !== [] && !in_array($type, $this->eventsOnly, true)) {
+        if ($this->eventsOnly !== [] && !in_array($type, array_column($this->eventsOnly, 'value'), true)) {
             return false;
         }
 
