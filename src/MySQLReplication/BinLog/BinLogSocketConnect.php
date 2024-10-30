@@ -310,7 +310,7 @@ class BinLogSocketConnect
 
         $data = pack('i', strlen($binFileName) + 11) . chr(self::COM_BINLOG_DUMP);
         $data .= pack('I', $binFilePos);
-        $data .= pack('v', chr(self::BINLOG_SEND_ANNOTATE_ROWS_EVENT));
+        $data .= pack('v', hexdec((string)self::BINLOG_SEND_ANNOTATE_ROWS_EVENT));
         $data .= pack('I', $this->config->slaveId);
         $data .= $binFileName;
 
