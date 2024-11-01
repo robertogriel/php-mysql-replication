@@ -119,10 +119,10 @@ class ConfigTest extends TestCase
         $config = (new ConfigBuilder())->build();
         self::assertTrue($config->checkEvent(1));
 
-        $config = (new ConfigBuilder())->withEventsOnly([2])->build();
+        $config = (new ConfigBuilder())->withEventsOnly([['value' => 2]])->build();
         self::assertTrue($config->checkEvent(2));
 
-        $config = (new ConfigBuilder())->withEventsOnly([3])->build();
+        $config = (new ConfigBuilder())->withEventsOnly([['value' => 3]])->build();
         self::assertFalse($config->checkEvent(4));
 
         $config = (new ConfigBuilder())->withEventsIgnore([4])->build();
