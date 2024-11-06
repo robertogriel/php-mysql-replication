@@ -17,7 +17,7 @@ use MySQLReplication\Event\RowEvent\RowEventFactory;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-readonly class Event
+class Event
 {
     public const REPLICATION_QUERY = '/* isReplicating */';
 
@@ -27,12 +27,12 @@ readonly class Event
     private bool $isReplicated = false;
 
     public function __construct(
-        private BinLogSocketConnect $binLogSocketConnect,
-        private RowEventFactory $rowEventFactory,
-        private EventDispatcherInterface $eventDispatcher,
-        private CacheInterface $cache,
-        private Config $config,
-        private BinLogServerInfo $binLogServerInfo
+        private readonly BinLogSocketConnect $binLogSocketConnect,
+        private readonly RowEventFactory $rowEventFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly CacheInterface $cache,
+        private readonly Config $config,
+        private readonly BinLogServerInfo $binLogServerInfo
     ) {
     }
 
